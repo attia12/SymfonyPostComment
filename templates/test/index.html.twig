@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello TestController!{% endblock %}
+
+{% block body %}
+  <button id="notifyButton">Notify</button>
+
+  <script>
+    const eventSource = new EventSource("{{ mercure(['https://example.com/notifications'])|escape('js') }}");
+    
+    eventSource.onmessage = event => {
+      const data = JSON.parse(event.data);
+      // Display the received message
+      alert(data.message);
+    };
+
+    document.getElementById('notifyButton').addEventListener('click', function() {
+      fetch('{{ path('notify') }}'); // Send a request to notify users
+    });
+  </script>
+{% endblock %}
